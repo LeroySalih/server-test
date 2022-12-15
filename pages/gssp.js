@@ -2,10 +2,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
+import { DateTime } from 'luxon'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({dt}) {
   return (
     <>
       <Head>
@@ -15,11 +16,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <h1>Static Main Page.</h1>
-        <div>No props</div>
+        <h1>Get Server Side Props.</h1>
+        <div>dt: {JSON.stringify(dt)}</div>
       </div>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  console.log("In getServerSideProps")
+  const dt = DateTime.now();
+  console.log(dt.toISO())
+  return {
+    props: {dt : dt.toISO()}, // will be passed to the page component as props
+  }
 }
 
 
